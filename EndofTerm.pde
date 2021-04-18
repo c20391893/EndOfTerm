@@ -15,7 +15,7 @@ float lerpedAverage = 0;
 
 float[] lerpedBuffer;
 
-float x = 0;
+float x = 50;
 float magnitude;
 int widths = 100;
 int heights = 40;
