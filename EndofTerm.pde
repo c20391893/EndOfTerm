@@ -85,20 +85,11 @@ void draw()
   if(which>0)
   {
    player.play();
-     for(int j=0;j<total;j++)
-      {
-        
-        noStroke();
-        fill(100,50,50);
-       ellipse(boxArrayX[j],boxArrayY[j],10,10);
-       boxArrayX[j]+=boxArraySpeed[j];
-       if(boxArrayX[j]>width)
-       {
-           boxArrayX[j]=0;
-  boxArrayY[j]=random(0,height);
-  boxArraySpeed[j]=random(2,5);
-      }
   }
+    
+     
+      
+  
   
 
    if (which == 1)
@@ -115,7 +106,21 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
       fill(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
       ellipse(i*20, width/2, 5, sample); 
     }
-    
+     for(int j=0;j<total;j++)
+      {
+        
+        noStroke();
+        fill(100,50,50);
+       ellipse(boxArrayX[j],boxArrayY[j],10,10);
+       boxArrayX[j]+=boxArraySpeed[j];
+       if(boxArrayX[j]>width)
+       {
+           boxArrayX[j]=0;
+  boxArrayY[j]=random(0,height);
+  boxArraySpeed[j]=random(2,5);
+      }
+      
+  }
       
       
     
@@ -185,7 +190,7 @@ for (int i = 0; i < buffer.size() ; i++)
  
 
   } 
-}
+
 
 
 void keyPressed()
