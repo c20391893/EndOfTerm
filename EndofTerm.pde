@@ -96,17 +96,7 @@ void draw()
   {
     colorMode(HSB,255);
     strokeWeight(1);
-    for (int i = 0; i < buffer.size(); i ++)
-    {
-      float sample = buffer.get(i) * halfH;
-      stroke(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
-      //line(i, halfH + sample, i, halfH - sample); 
-lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
-      sample = lerpedBuffer[i] * width / 2;    
-      fill(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
-      ellipse(i*20, width/2, 5, sample); 
-    }
-     for(int j=0;j<total;j++)
+       for(int j=0;j<total;j++)
       {
         
         noStroke();
@@ -119,12 +109,19 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   boxArrayY[j]=random(0,height);
   boxArraySpeed[j]=random(2,5);
       }
-      
-  }
-      
-      
-    
-  }
+      }
+    for (int i = 0; i < buffer.size(); i ++)
+    {
+      float sample = buffer.get(i) * halfH;
+      stroke(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
+      //line(i, halfH + sample, i, halfH - sample); 
+lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
+      sample = lerpedBuffer[i] * width / 2;    
+      fill(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
+      ellipse(i*20, width/2, 5, sample); 
+    }
+   }
+   
   if(which==2)
   {
     background(0);
@@ -175,6 +172,21 @@ for (int i = 0; i < buffer.size() ; i++)
       endShape();
     }
   }
+   for (int i = 0; i < buffer.size(); i ++)
+    {
+      float sample = buffer.get(i) * halfH;
+      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      //line(i, halfH + sample, i, halfH - sample); 
+
+      lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
+
+      sample = lerpedBuffer[i] * width ;    
+      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      line(0, i, sample, i); 
+      line(width, i, width - sample, i); 
+      line(i, 0, i, sample); 
+      line(i, height, i, height - sample);
+    }
   }
  
   float sum = 0;
