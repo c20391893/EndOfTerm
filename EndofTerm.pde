@@ -78,7 +78,7 @@ void draw()
     for (int i = 0; i < buffer.size(); i ++)
     {
       float sample = buffer.get(i) * halfH;
-      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      stroke(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
       //line(i, halfH + sample, i, halfH - sample); 
 lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
 
@@ -135,7 +135,7 @@ for (int i = 0; i < buffer.size() ; i++)
     }
   }
 
-  if (which == 3)
+ /* if (which == 3)
   {
     
   //Fades the hue of the lines
@@ -192,6 +192,7 @@ for (int i = 0; i < buffer.size() ; i++)
   }
 
   }
+  */
   float sum = 0;
   for (int i = 0; i < buffer.size(); i ++)
   {
