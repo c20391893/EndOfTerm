@@ -35,7 +35,11 @@ int c = 255;
 int dir = 1;
 float[] peaks = new float[1024];
 float[] last_peaks = new float[1024];
+<<<<<<< Updated upstream
 
+=======
+int total=51;
+>>>>>>> Stashed changes
 float rad1, rad2, rad3;
 
 float step = TWO_PI/340;
