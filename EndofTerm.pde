@@ -14,7 +14,9 @@ FFT fft;
 float lerpedAverage = 0;
 
 float[] lerpedBuffer;
-
+float[] boxArrayX;
+float[] boxArrayY;
+float[] boxArraySpeed;
 float x = 50;
 float magnitude;
 int widths = 100;
@@ -35,17 +37,17 @@ int c = 255;
 int dir = 1;
 float[] peaks = new float[1024];
 float[] last_peaks = new float[1024];
-<<<<<<< Updated upstream
-
-=======
-int total=51;
->>>>>>> Stashed changes
+int total=50;
 float rad1, rad2, rad3;
-
+int which = 0;
 float step = TWO_PI/340;
 float min;
+
+
+  
+  
 void setup()
-{
+  {
   size(1000, 1000,P3D);
   colorMode(HSB);
   minim = new Minim(this);
@@ -54,43 +56,72 @@ void setup()
   buffer = player.mix;
   input=minim.getLineIn();
 fft= new FFT(input.bufferSize(),input.sampleRate());
-  lerpedBuffer = new float[buffer.size()];
+ lerpedBuffer = new float[buffer.size()];
+boxArrayX= new float[total];
+ boxArrayY= new float[total];
+ boxArraySpeed= new float[total];
+ for(int j=0;j<total;j++)
+ {
+  boxArrayX[j]=random(0,width);
+  boxArrayY[j]=random(0,height);
+  boxArraySpeed[j]=random(2,5);
 }
+  }
 
-int which = 0;
 
+  
 void draw()
+
 {
-  println(frameCount);
+
   background(0);
   float halfH = height / 2;
-  if(which>0)
-  {
-   player.play();
-  }
-  
-  if(which==0)
+    if(which==0)
   {
    fill(255,0,255);
     //stroke(255);
     text("Press the numbers 1 through 5 to change visual",width/2-150,height/2);
   }
+  if(which>0)
+  {
+   player.play();
+  }
+    
+     
+      
+  
+  
+
    if (which == 1)
   {
     colorMode(HSB,255);
     strokeWeight(1);
+       for(int j=0;j<total;j++)
+      {
+        
+        noStroke();
+        fill(100,50,50);
+       ellipse(boxArrayX[j],boxArrayY[j],10,10);
+       boxArrayX[j]+=boxArraySpeed[j];
+       if(boxArrayX[j]>width)
+       {
+           boxArrayX[j]=0;
+  boxArrayY[j]=random(0,height);
+  boxArraySpeed[j]=random(2,5);
+      }
+      }
     for (int i = 0; i < buffer.size(); i ++)
     {
       float sample = buffer.get(i) * halfH;
-      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      stroke(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
       //line(i, halfH + sample, i, halfH - sample); 
 lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
-
       sample = lerpedBuffer[i] * width / 2;    
       fill(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
       ellipse(i*20, width/2, 5, sample); 
     }
-  }
+   }
+   
   if(which==2)
   {
     background(0);
@@ -108,6 +139,7 @@ for (int i = 0; i < buffer.size() ; i++)
     
     last_peaks[i] = peaks[i];
   }
+  
  rad1 = 0;
   rad1 += frameCount/125.0;
   rad2 = TWO_PI/3;
@@ -115,11 +147,13 @@ for (int i = 0; i < buffer.size() ; i++)
   rad3 = 2*(TWO_PI/3);
   rad3 -= frameCount/100.0;
   min = 200;
-  for (int i = 0; i < 341; i++) {
-    rad1 += step;
+  for (int i = 0; i < 341; i++)
+  {
+     rad1 += step;
     rad2 += step;
     rad3 += step;
-    if (i % 5 == 0) {
+    if (i % 5 == 0) 
+    {
       beginShape(TRIANGLES);
       fill(0, 0, 255);
       vertex(width/2, height/2);
@@ -138,64 +172,23 @@ for (int i = 0; i < buffer.size() ; i++)
       endShape();
     }
   }
+   for (int i = 0; i < buffer.size(); i ++)
+    {
+      float sample = buffer.get(i) * halfH;
+      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      //line(i, halfH + sample, i, halfH - sample); 
 
-  if (which == 3)
-  {
-    
-  //Fades the hue of the lines
-  c += dir;
-  
-  stroke(c, 100, 100);
-  strokeWeight(2);
-  
-  //Tiny pause at start
-  if (frameCount > 120) {
-    line(0, h, width, h);
-  }
-  
-  translate(width/2, 0);
+      lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
 
-  
-  if (frameCount % 10 == 0) {
-
-    l.add(new Line(h));
-  }
-
- 
-  if (frameCount > 120) {
-    
- 
-    for (float i = 0; i < width/2; i = i + map(i, 0, width/2, 60, 45)) {
-
-      line(i, h, map(i, 0, width/2, 0, width * p), height);
-      line(-i, h, map(-i, 0, width/2, 0, width * p), height);
+      sample = lerpedBuffer[i] * width ;    
+      stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
+      line(0, i, sample, i); 
+      line(width, i, width - sample, i); 
+      line(i, 0, i, sample); 
+      line(i, height, i, height - sample);
     }
   }
-
-
-  for (int i = 0; i < l.size(); i++) {
-
-    l.get(i).move();
-    
-   
-    if (frameCount > 120) {
-      l.get(i).show();
-    }
-
-  
-    if (l.get(i).pos + h > height * 2) {
-
-      l.remove(i);
-    }
-  }
-
  
-  if (c >= 360 || c <= 0) {
-
-    dir *= -1;
-  }
-
-  }
   float sum = 0;
   for (int i = 0; i < buffer.size(); i ++)
   {
@@ -206,10 +199,10 @@ for (int i = 0; i < buffer.size() ; i++)
   fill(map(lerpedAverage, 0, 1, 0, 255), 255, 255);
   float average = sum / buffer.size();
   lerpedAverage = lerp(lerpedAverage, average, 0.1f);
- }
-}
  
-  
+
+  } 
+
 
 
 void keyPressed()
