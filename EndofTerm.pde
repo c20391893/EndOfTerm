@@ -89,11 +89,7 @@ void draw()
   }
     
      
-      
-  
-  
-
-   if (which == 1)
+ if (which == 1)
   {
     colorMode(HSB,255);
     strokeWeight(1);
@@ -127,7 +123,6 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   {
   background(0);
   blendMode(ADD);
-  colorMode(HSB,255);
   //background(frameCount%255, 255, 30);
   colorMode(RGB,255);
   
@@ -137,7 +132,7 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   {
     
     // with linear interpolation:
-    peaks[i] = lerp(last_peaks[i], (input.left.get(i)*amplitude), 0.03);
+    peaks[i] = lerp(last_peaks[i], (input.left.get(i)*10), 0.03);
     
     // with NO linear interpolation:
     //peaks[i] = (input.left.get(i)*amplitude);
@@ -180,6 +175,7 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   }
    for (int i = 0; i < buffer.size(); i ++)
     {
+      //colorMode(HSB,255);
       float sample = buffer.get(i) * halfH;
       stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
       //line(i, halfH + sample, i, halfH - sample); 
