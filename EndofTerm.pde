@@ -137,7 +137,7 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   {
     
     // with linear interpolation:
-    peaks[i] = lerp(last_peaks[i], (input.mix.get(i)*20), 0.03);
+    peaks[i] = lerp(last_peaks[i], (buffer.get(i)*10), 0.03);
     
     // with NO linear interpolation:
    // peaks[i] = (input.left.get(i)*amplitude);
