@@ -12,7 +12,8 @@ AudioInput input;
 AudioInput ai;
 FFT fft;
 float lerpedAverage = 0;
-
+float a1;
+float a2;
 float[] lerpedBuffer;
 float[] boxArrayX;
 float[] boxArrayY;
@@ -23,7 +24,7 @@ int widths = 100;
 int heights = 40;
 float speed = 50.0;
 float factor;
-float amplitude = 50;
+float amplitude = 150;
 float amplitude1 = 150;
 float amplitude2 = 75;
 float amplitude3 = 70;
@@ -48,7 +49,9 @@ float min;
   
 void setup()
   {
-  size(1000, 1000,P3D);
+    noCursor();
+  //size(1000, 1000,P3D);
+  fullScreen(P3D);
   colorMode(HSB);
   minim = new Minim(this);
   player = minim.loadFile("Headhunterz - Dragonborn Part 3 (Da Tweekaz Remix).mp3", width);
@@ -115,7 +118,7 @@ void draw()
 lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
       sample = lerpedBuffer[i] * width / 2;    
       fill(map(i, 0, buffer.size()/5, 0, 255), 255, 255);
-      ellipse(i*20, width/2, 5, sample); 
+      ellipse(i*20, height/2, 5, sample); 
     }
    }
    
@@ -132,10 +135,10 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   {
     
     // with linear interpolation:
-    peaks[i] = lerp(last_peaks[i], (input.left.get(i)*10), 0.03);
+    peaks[i] = lerp(last_peaks[i], (input.left.get(i)*amplitude*100), 0.03);
     
     // with NO linear interpolation:
-    //peaks[i] = (input.left.get(i)*amplitude);
+   // peaks[i] = (input.left.get(i)*amplitude);
     
     last_peaks[i] = peaks[i];
   }
@@ -190,6 +193,47 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
       line(i, height, i, height - sample);
     }
   }
+ 
+ 
+ if(which==3)
+ {
+   colorMode(RGB);
+  smooth();
+  background (0);
+   frameRate(30);
+   fill(0,50);
+  noStroke();
+  rect(0, 0, width, height);
+  translate(width/2, height/2);
+  
+  for (int i = 0; i < player.bufferSize() - 1; i++) 
+  {
+    
+    float angle = sin(i+a1)* 10;
+    float angle2 = sin(i+a2)* 300;
+    
+    float x = sin(radians(i))*(500/angle);
+    float y = cos(radians(i))*(500/angle);
+    
+    float x3 = sin(radians(i))*(500/angle);
+    float y3 = cos(radians(i))*(500/angle);
+    
+    fill (100, 90);
+    ellipse(x, y, player.left.get(i)*20, player.left.get(i)*10);
+    
+    fill ( 20, 100, 60);
+    rect(x, y, player.left.get(i)*20, player.left.get(i)*10);
+    
+    fill ( 150, 50, 90);
+    rect(x, y, player.right.get(i)*10, player.left.get(i)*10);
+    
+    
+    fill( 150, 0, 70);
+    rect(x3, y3, player.right.get(i)*10, player.right.get(i)*20);
+  }
+  a1 += 0.008;
+  a2 += 0.04;
+}
  
   float sum = 0;
   for (int i = 0; i < buffer.size(); i ++)
