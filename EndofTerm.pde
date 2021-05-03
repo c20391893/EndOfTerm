@@ -11,6 +11,8 @@ AudioBuffer buffer;
 AudioInput input;
 AudioInput ai;
 FFT fft;
+float b1;
+float b2;
 float lerpedAverage = 0;
 float a1;
 float a2;
@@ -54,7 +56,7 @@ void setup()
   fullScreen(P3D);
   colorMode(HSB);
   minim = new Minim(this);
-  player = minim.loadFile("Headhunterz - Dragonborn Part 3 (Da Tweekaz Remix).mp3", width);
+  player = minim.loadFile("Dungeons & Dickholes.mp3", width);
   //ai = minim.getLineIn(Minim.MONO, width, 44100, 16);
   buffer = player.mix;
   input=minim.getLineIn();
@@ -84,7 +86,7 @@ void draw()
   {
    fill(255,0,255);
     //stroke(255);
-    text("Press the numbers 1 through 5 to change visual",width/2-150,height/2);
+    text("Press the numbers 1 through 4 to change visual",width/2-150,height/2);
   }
   if(which>0)
   {
@@ -185,7 +187,7 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
 
       lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
 
-      sample = lerpedBuffer[i] * width ;    
+      sample = lerpedBuffer[i] * 1000 ;    
       stroke(map(i, 0, buffer.size(), 0, 255), 255, 255);
       line(0, i, sample, i); 
       line(width, i, width - sample, i); 
@@ -235,6 +237,54 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
   a2 += 0.04;
 }
  
+ if(which==4)
+ {
+    fill(0,50);
+  noStroke();
+  rect(0, 0, width, height);
+  translate(width/2, height/2);
+  
+  for (int i = 1; i < player.bufferSize() - 1; i++)
+  {
+    
+    float angle = sin(i+b1)* 10;
+    float angle2 = sin(i+b2)* 10;
+    
+    float x1 = sin(radians(i))/(500/angle);
+    float y1 = cos(radians(i))*(500/angle);
+    
+    float x2 = sin(radians(i))*(1500/angle);
+    float y2 = cos(radians(i))-(500/angle);
+    
+    float x3 = sin(radians(i))+(500/angle2);
+    float y3 = sin(radians(i))/(500/angle);
+      
+    //Both vertical and horizontal lines the meet in the middle 
+    fill (0, 150, 0);
+    rect(x1, y1, player.right.get(i)*50, player.right.get(i)*50);
+    
+    fill ( 0, 150, 0);
+    rect(x2, y3, player.right.get(i)*50, player.right.get(i)*50);
+    
+    fill ( 150, 0, 0);
+    rect(x1, y1, player.left.get(i)*50, player.left.get(i)*50);
+    
+    fill( 150, 0, 0);
+    rect(x2, y3,player.left.get(i)*50,player.left.get(i)*50);
+   
+   
+   //The corners cross hatch line effect
+   fill(150,0,0);
+   ellipse(x3,y2,x3,player.right.get(i)*10);
+   
+   fill(0,150,0);
+   ellipse(x3,y2,player.left.get(i)*10,y2);
+   
+  b1 += 1.000;
+  b2 -= +0.05;
+  }
+ }
+  
   float sum = 0;
   for (int i = 0; i < buffer.size(); i ++)
   {
@@ -251,7 +301,7 @@ lerpedBuffer[i] = lerp(lerpedBuffer[i], buffer.get(i), 0.1f);
 
 void keyPressed()
 {
-  if (keyCode >= '1' && keyCode <= '5')
+  if (keyCode >= '1' && keyCode <= '4')
   {
     which = keyCode - '0';
   }
